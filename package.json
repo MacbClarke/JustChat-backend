@@ -1,0 +1,29 @@
+{
+  "name": "justchat",
+  "version": "1.0.0",
+  "description": "I just wanna chat.",
+  "main": "app.ts",
+  "scripts": {
+    "test": "nodemon",
+    "build": "npx del-cli dist && webpack"
+  },
+  "author": "MacbClarke",
+  "license": "ISC",
+  "dependencies": {
+    "body-parser": "^1.20.0",
+    "cors": "^2.8.5",
+    "del-cli": "^4.0.1",
+    "express": "^4.18.1",
+    "peer": "^0.6.1",
+    "socket.io": "^4.5.0",
+    "ts-loader": "^9.3.0",
+    "typescript": "^4.6.4",
+    "webpack": "^5.72.0"
+  },
+  "devDependencies": {
+    "@types/express": "^4.17.13",
+    "@types/node": "^17.0.31",
+    "nodemon": "^2.0.16",
+    "webpack-cli": "^4.9.2"
+  }
+}
