@@ -48,3 +48,30 @@ export const leave = (req, resp) => {
         status: 'success'
     })
 }
+
+export const getUsers = (req, resp) => {
+    let roomId = req.query.roomId;
+    let room = RoomService.getInstance().getRoom(roomId);
+
+    if(room) {
+        let users = room.getUserList();
+
+        let resData = [];
+        for (let user of users) {
+            resData.push({
+                userId: user.getUserId(),
+                userName: user.getUserName()
+            });
+        }
+
+        resp.send({
+            status: 'success',
+            content: resData
+        });
+    } else {
+        resp.send({
+            status: 'error',
+            content: '房间不存在'
+        });
+    }
+}
