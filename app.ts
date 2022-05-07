@@ -1,7 +1,6 @@
 import * as bodyParser from "body-parser";
+import { socketController } from "./controller/socketController";
 import { route } from "./route/api";
-import { RoomService } from "./service/roomService";
-import { UserService } from "./service/userService";
 
 const express = require('express');
 const app = express();
@@ -29,16 +28,6 @@ app.use('/peer', ExpressPeerServer(server, {
 
 app.use('/', route);
 
-io.on('connection', socket => {
-    let userId = socket.handshake.query.userId;
-    UserService.getInstance().createUser(userId, socket);
-    socket.on('disconnect', () => {
-        let user = UserService.getInstance().getUser(userId);
-        RoomService.getInstance().leaveRoom(user);
-        UserService.getInstance().deleteUser(userId);
-        console.log(`${userId} disconnected.`);
-    })
-    console.log(`${userId} connected.`)
-})
+io.on('connection', socketController)
 
 server.listen(8848)

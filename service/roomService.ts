@@ -52,7 +52,10 @@ export class RoomService implements roomService {
 
             let socket = user.getSocket();
             socket.join(roomId);
-            socket.broadcast.to(roomId).emit('user-join', user.getUserId());
+            socket.broadcast.to(roomId).emit('user-join', {
+                userId: user.getUserId(),
+                userName: user.getUserName()
+            });
 
             return true;
         }
@@ -67,7 +70,10 @@ export class RoomService implements roomService {
 
             let socket = user.getSocket();
             socket.leave(roomId);
-            socket.broadcast.to(roomId).emit('user-leave', user.getUserId());
+            socket.broadcast.to(roomId).emit('user-leave', {
+                userId: user.getUserId(),
+                userName: user.getUserName()
+            });
 
             if(this.RoomPool[roomId].getUserList().length === 0) {
                 this.destroyRoom(roomId);
