@@ -1,4 +1,5 @@
 import * as bodyParser from "body-parser";
+import { cmdController } from "./controller/cmdController";
 import { socketController } from "./controller/socketController";
 import { route } from "./route/api";
 
@@ -16,6 +17,10 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use('/', route);
 
 io.on('connection', socketController)
+
+process.stdin.resume();
+process.stdin.setEncoding('utf8');
+process.stdin.on('data', cmdController);
 
 server.listen(8848)
 PeerServer({port: 8849, path: '/peer'});

@@ -2,7 +2,7 @@ import { Room } from '../entities/room';
 import { User } from '../entities/user';
 
 interface roomService {
-    createRoom(): string,
+    createRoom(roomId?: string): string,
     joinRoom(roomId: string, user: User, socket: any): boolean,
     getRoom(roomId: string): Room,
     leaveRoom(user: User): boolean,
@@ -34,11 +34,16 @@ export class RoomService implements roomService {
         return roomId.toString();
     }
 
-    createRoom(): string {
-        let roomId: string = this.genId();
-        this.RoomPool[roomId] = new Room(roomId);
-        console.log(`Room ${roomId} created.`);
-        return roomId;
+    createRoom(roomId: string = null): string {
+        let id: string = roomId || this.genId();
+        let room = new Room(id);
+        if (roomId) {
+            room.setAutoDestroy(false);
+        }
+        this.RoomPool[id] = room;
+
+        console.log(`Room ${id} created.`);
+        return id;
     }
 
     getRoom(roomId: string): Room {
@@ -75,7 +80,7 @@ export class RoomService implements roomService {
                 userName: user.getUserName()
             });
 
-            if(this.RoomPool[roomId].getUserList().length === 0) {
+            if(this.RoomPool[roomId].isAutoDestroy() && this.RoomPool[roomId].getUserList().length === 0) {
                 this.destroyRoom(roomId);
             }
             return true;
@@ -83,7 +88,7 @@ export class RoomService implements roomService {
         return false;
     }
 
-    private destroyRoom(roomId: string): boolean {
+    destroyRoom(roomId: string): boolean {
         if (this.RoomPool[roomId]) {
             delete this.RoomPool[roomId];
             console.log(`Room ${roomId} destroyed.`);

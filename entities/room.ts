@@ -10,10 +10,12 @@ interface room {
 export class Room implements room {
     private userList: Array<User>;
     private roomId: string;
+    private autoDestroy: boolean;
 
     constructor(roomId: string) {
         this.roomId = roomId;
         this.userList = [];
+        this.autoDestroy = true;
     }
 
     getUserList() {
@@ -22,6 +24,14 @@ export class Room implements room {
 
     getRoomId() {
         return this.roomId;
+    }
+
+    setAutoDestroy(autoDestroy: boolean) {
+        this.autoDestroy = autoDestroy;
+    }
+
+    isAutoDestroy() {
+        return this.autoDestroy;
     }
 
     join(user: User) {
