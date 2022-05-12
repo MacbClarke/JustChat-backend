@@ -57,10 +57,6 @@ export class RoomService implements roomService {
 
             let socket = user.getSocket();
             socket.join(roomId);
-            socket.broadcast.to(roomId).emit('user-join', {
-                userId: user.getUserId(),
-                userName: user.getUserName()
-            });
 
             return true;
         }

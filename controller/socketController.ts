@@ -22,5 +22,12 @@ export const socketController = (socket) => {
             state: state
         });
     })
+    socket.on('answer-ready', () => {
+        let user = UserService.getInstance().getUser(userId);
+        socket.broadcast.to(user.getRoomId()).emit('user-join', {
+            userId: user.getUserId(),
+            userName: user.getUserName()
+        });
+    })
     console.log(`${userId} connected.`)
 }
